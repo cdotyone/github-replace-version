@@ -1,7 +1,7 @@
 {
-  "name": "github-set-net-version",
+  "name": "github-set-readme-version",
   "version": "1.0.0",
-  "description": "Sets the .net assembly version.",
+  "description": "Sets the README.md version.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cdotyone/github-set-net-version.git"
+    "url": "git+https://github.com/cdotyone/github-set-readme-version.git"
   },
   "keywords": [
     "GitHub",
@@ -21,9 +21,9 @@
   "author": "Chris Doty",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cdotyone/github-set-net-version/issues"
+    "url": "https://github.com/cdotyone/github-set-readme-version/issues"
   },
-  "homepage": "https://github.com/cdotyone/github-set-net-version#readme",
+  "homepage": "https://github.com/cdotyone/github-set-readme-version#readme",
   "dependencies": {
     "@actions/core": "^1.2.4",
     "glob": "^7.1.6",

@@ -1,5 +1,5 @@
-name: 'Get .Net Version'
-description: 'Set .net file assembly version'
+name: 'Get README.md Version'
+description: 'Set README.md file version'
 branding:
   icon: 'tag'
   color: 'gray-dark'
@@ -7,9 +7,6 @@ inputs:
   version:
     description: 'version# to set'
     required: true
-outputs:
-  version:
-    description: 'next tag version'
 runs:
   using: 'node12'
   main: 'dist/index.js'

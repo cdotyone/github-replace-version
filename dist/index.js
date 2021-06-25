@@ -1078,16 +1078,14 @@ const fs = __webpack_require__(747);
 const glob = __webpack_require__(402);
 const util = __webpack_require__(669);
 
-const files = glob.sync( path.join(process.cwd(),'**/VersionInfo.cs'), recursive=true);
+const files = glob.sync( path.join(process.cwd(),'**/README.md'), recursive=true);
 console.log("setNetVersion: start");
 console.log(files);
 
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
-let version = core.getInput('version') || '0';
-let rev = core.getInput('revision') || "0";
-let setCopy = false;
+let version = core.getInput('version') || 'PACKAGE';
 let showTrace = false;
 let av = false;
 
@@ -1112,54 +1110,26 @@ if(version==="NEXT") {
     version = fs.readFileSync(path.join(process.cwd(),'VERSION'), 'utf8');
 }
 
-if(!rev) rev='0';
+if(files.length>1) {
 
-if(files.length===1) {
-
-    let assemblyVersion = version;
-    while(assemblyVersion.split('.').length<4) {
-        assemblyVersion+='.0';
-    }
-    if(showTrace) console.log(assemblyVersion);
-
-    let fileVersion = version;
-    if(fileVersion.split('.').length>3) {
-        let parts = fileVersion.split('.');
-        parts.pop();
-        fileVersion = parts.join('.');
-    }
-    fileVersion+='.'+rev;
-
-    console.log("setNetVersion: ",fileVersion);
-
+    console.log("setReadmeVersion: ",version);
     const run = async () => {
-
+        version=version.replace(/v/g,'');
 
         let data = await readFile(files[0], 'utf8');
 
-        if(av) { data = data.replace(/AssemblyVersion\(\"(\d{1,})\.(\d{1,})\.(\d{1,})\.(\d{1,})\"\)/gm, 'AssemblyVersion("' + assemblyVersion + '")'); }
-        data = data.replace(/AssemblyFileVersion\(\"(\d{1,})\.(\d{1,})\.(\d{1,})\.(\d{1,})\"\)/gm, 'AssemblyFileVersion("' + fileVersion + '")');
-
-        if (setCopy) {
-            data = data.replace(/©\s?(\d{1,})/gm, '© ' + (new Date().getFullYear()));
-        }
+        data = data.replace(/\[version\]:\s(v.*)/gm, '[version]: v' + version);
 
         if (showTrace) console.log(data);
 
         await writeFile(files[0], data);
         console.log('setNetVersion: writing - ', fileVersion);
-
     };
 
     run();
     process.exit(0);
 } else {
-    if(files.length===0) {
-        console.log("setNetVersion: no VersionInfo.cs file found");
-        process.exit(1);
-        return;
-    }
-    console.log("setNetVersion: multiple VersionInfo.cs files found");
+    console.log("setReadmeVersion: no README.cs file found");
     process.exit(1);
 }
 
