@@ -1,4 +1,4 @@
-# github-set-readme-version
+# github-replace-version
 Sets the README.md version.
 
 ## Example
@@ -11,13 +11,14 @@ jobs:
       - uses: actions/checkout@v1
       - name: 'Set README.md tag'
         id: semver
-        uses: "cdotyone/github-next-version@main"
-        with:
-          version: "NEXT"  // DEFAULT
+        uses: "cdotyone/github-replace-version@main"
 ```
 
-version: 
-* NEXT - version imported from VERSION file
-* PACKAGE -  version imported from package.json
+version:
 * 1.0.0 - raw version
 * v1.0.0 - raw tag formatted version
+
+
+```
+https://github.com/cdotyone/github-replace-version?ref=v0.0.0
+```
