@@ -30,4 +30,5 @@ jobs:
       - name: 'Get Previous tag'
         uses: "cdotyone/github-replace-version@main"
         with:
+          version: semver.version
           debug: "true"
