@@ -868,7 +868,7 @@ const stringToRegExp = __webpack_require__(499);
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
-const debug = core.getInput('debug')==='true';
+const debug = core.getInput('debug');
 
 let version = core.getInput('version') || process.env.version;
 if(!version) version = "0";
