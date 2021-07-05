@@ -27,8 +27,8 @@ jobs:
           message: "${{github.event.head_commit.message}}"
         env:
           GITHUB_TOKEN: "${{ github.token }}"
-      - name: 'Get Previous tag'
+      - name: 'Set Previous Version'
         uses: "cdotyone/github-replace-version@main"
         with:
-          version: semver.version
-          debug: "true"
+          version: ${{semver.outputs.version}}
+          debug: true
