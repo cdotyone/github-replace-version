@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: 'Commit Lint'
-        use: "cdotyone/github-commit-lint@main"
+        uses: "cdotyone/github-commit-lint@main"
         with:
           message: "${{github.event.head_commit.message}}"
       - name: 'Get Previous tag'
