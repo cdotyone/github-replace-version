@@ -28,7 +28,6 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ github.token }}"
       - name: 'Get Previous tag'
-        id: semver
         uses: "cdotyone/github-replace-version@main"
         with:
           debug: "true"
