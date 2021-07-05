@@ -5,21 +5,59 @@ name: CI
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  workflow_dispatch:
-  
+    
 jobs:
-  build:
+  Test: 
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: 'Commit Lint'
-        uses: "cdotyone/github-commit-lint@main"
+        use: "cdotyone/github-commit-lint@main"
         with:
           message: "${{github.event.head_commit.message}}"
+      - name: 'Get Previous tag'
+        id: semver
+        uses: "cdotyone/github-next-version@main"
+        with:
+          message: "${{github.event.head_commit.message}}"
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
+      - name: 'Set Previous Version'
+        uses: "cdotyone/github-replace-version@main"
+        with:
+          version: ${{steps.semver.outputs.version}}
+          debug: true
+  Build:
+    runs-on: ubuntu-latest
+    needs: [Test]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install 
+      - name: Build
+        run: npm run build
+      - name: Release
+        run: |
+          git config --global user.email "cdotyone"
+          git config --global user.name "cdotyone"
+          git add .
+          git commit -a -m "build: auto build"
+        continue-on-error: true
+      - name: Conventional Changelog Action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.github_token }}
+          output-file: "CHANGELOG.md"
+      - name: Create Release
+        uses: actions/create-release@v1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
       - name: 'Get Previous tag'
         id: semver
         uses: "cdotyone/github-next-version@main"
