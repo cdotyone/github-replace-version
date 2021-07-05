@@ -22,7 +22,7 @@ inputs:
   debug:
     description: 'outputs instead of changing the file'
     required: false
-    default: 'false'
+    default: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
